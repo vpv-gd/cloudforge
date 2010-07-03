@@ -41,14 +41,21 @@ cloud:
 # used and deployed software components
 components:
     navappmaster:
-        version: CATALOG_MT_BUILD
+        version: (CATALOG_MT_BUILD)
     navappreplica:
-        version: CATALOG_WEB_BUILD
+        version: (CATALOG_WEB_BUILD)
 
 # deployment scheme
 deployment:
     navappmaster:
         - catalogmt: 1
+            # from instance-level config
+            imgserver: (SCENE7_IMG_SERVER)
     navappreplica:
         - catalogweb: 1
+            imgserver: (SCENE7_IMG_SERVER)
+            # master ip -- runlevel param
+            master_ip: (NAVAPP_MASTER_IP)
+            # bdb port -- profile level
+            master_port: 8080
 

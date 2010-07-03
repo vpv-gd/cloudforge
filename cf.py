@@ -16,7 +16,7 @@ conf = ConfigParser.SafeConfigParser({})
 conf.read("cloudforge.conf")
 
 def usage():
-	print "%s: --profile PROFILE arg1=val1 [arg2=val2 ...]" % (sys.argv[0],)
+	print "%s: --profile PROFILE --name ENVNAME arg1=val1 [arg2=val2 ...]" % (sys.argv[0],)
 
 profileSource = "profiles/%s.yaml" % options.profile
 stream = file(profileSource, 'r')
