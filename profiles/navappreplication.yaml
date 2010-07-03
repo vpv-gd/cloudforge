@@ -1,0 +1,54 @@
+--- # profile for Navapp with replication
+# 1 CatalogMT as master node
+# 1 CatalogWeb as replica node
+# shared sdp
+# no mcom
+
+# profile handler
+adapter: navapp
+
+# profile identifier
+id: navappreplica1
+
+# RuntimeArgs
+instance:
+    - navapp: CATALOG_WEB_BUILD
+    - navappadmin: CATALOG_MT_BUILD
+
+# affected services
+services:
+    NAVAPP:
+        cloud:
+            - navappmaster: 1
+            - navappreplica: 1
+    SDP:
+        fixed:
+            host: 64.151.85.184
+            port: 8080
+    MCOM:
+        fixed:
+            url: http://www.macys.com
+
+# cloud server types
+cloud:
+    navappmaster:
+        ram: 2GB
+        image: 3456
+    navappreplica:
+        ram: 4GB
+        image: 3456
+
+# used and deployed software components
+components:
+    navappmaster:
+        version: CATALOG_MT_BUILD
+    navappreplica:
+        version: CATALOG_WEB_BUILD
+
+# deployment scheme
+deployment:
+    navappmaster:
+        - catalogmt: 1
+    navappreplica:
+        - catalogweb: 1
+

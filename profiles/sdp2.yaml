@@ -1,0 +1,37 @@
+--- # profile for sdp_2.0: one cloud node with both springdm and embedded coherence
+
+# profile handler
+adapter: sdp_2
+
+# profile identifier
+id: sdp-one-host-one-node
+
+# affected services
+services:
+    SDP:
+        cloud:
+            - sdp: 1
+    DB2:
+        fixed:
+            host: 64.151.85.186
+            port: 50001
+            user: db2mcys
+            password: lalala
+            database: mcd1c
+            schema: db2inst1
+
+# cloud server types
+cloud:
+    sdp:
+        ram: 4GB
+        image: 3275
+
+# used and deployed software components
+components:
+    sdp_web:
+        build: 20100702-verified-r88952
+
+# deployment scheme
+deployment:
+    sdp:
+        - sdp_web: 1
