@@ -12,8 +12,8 @@ id: navappreplica1
 
 # RuntimeArgs
 instance:
-    - navapp: CATALOG_WEB_BUILD
-    - navappadmin: CATALOG_MT_BUILD
+    navapp: CATALOG_WEB_BUILD
+    navappadmin: CATALOG_MT_BUILD
 
 # affected services
 services:
@@ -48,14 +48,11 @@ components:
 # deployment scheme
 deployment:
     navappmaster:
-        - catalogmt: 1
-            # from instance-level config
+        - catalogmt:
             imgserver: (SCENE7_IMG_SERVER)
     navappreplica:
-        - catalogweb: 1
+        - catalogweb:
             imgserver: (SCENE7_IMG_SERVER)
-            # master ip -- runlevel param
             master_ip: (NAVAPP_MASTER_IP)
-            # bdb port -- profile level
             master_port: 8080
-
+...
