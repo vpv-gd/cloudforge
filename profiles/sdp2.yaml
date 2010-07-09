@@ -6,6 +6,12 @@ adapter: sdp_2
 # profile identifier
 id: sdp-one-host-one-node
 
+# instance parameters and their keys in the profile
+instance:
+    db: DATABASE_NAME
+    user: USER_NAME
+    password: USER_PASSWORD
+
 # affected services
 services:
     SDP:
@@ -15,9 +21,9 @@ services:
         fixed:
             host: 64.151.85.186
             port: 50001
-            user: db2mcys
-            password: lalala
-            database: mcd1c
+            user: $(USER_NAME)
+            password: $(USER_PASSWORD)
+            database: $(DATABASE_NAME)
             schema: db2inst1
 
 # cloud server types
@@ -34,4 +40,4 @@ components:
 # deployment scheme
 deployment:
     sdp:
-        - sdp_web: 1
+        - sdp_web:

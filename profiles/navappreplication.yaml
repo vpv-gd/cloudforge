@@ -10,7 +10,7 @@ adapter: navapp
 # profile identifier
 id: navappreplica1
 
-# RuntimeArgs
+# instance parameters and their keys in the profile
 instance:
     navapp: CATALOG_WEB_BUILD
     navappadmin: CATALOG_MT_BUILD
@@ -41,18 +41,18 @@ cloud:
 # used and deployed software components
 components:
     navappmaster:
-        version: (CATALOG_MT_BUILD)
+        version: $(CATALOG_MT_BUILD)
     navappreplica:
-        version: (CATALOG_WEB_BUILD)
+        version: $(CATALOG_WEB_BUILD)
 
 # deployment scheme
 deployment:
     navappmaster:
         - catalogmt:
-            imgserver: (SCENE7_IMG_SERVER)
+            imgserver: $(SCENE7_IMG_SERVER)
     navappreplica:
         - catalogweb:
-            imgserver: (SCENE7_IMG_SERVER)
-            master_ip: (NAVAPP_MASTER_IP)
+            imgserver: $(SCENE7_IMG_SERVER)
+            master_ip: $(NAVAPP_MASTER_IP)
             master_port: 8080
 ...

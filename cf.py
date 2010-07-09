@@ -38,11 +38,11 @@ print "runtimeArgs:", runtimeArgs
 
 for paramName, paramKey in runtimeArgs.iteritems():
     #print "arg=%s, val=%s" % (arg, val)
-    newContent = profileContent.replace('(' + paramKey + ')', args[paramName])
+    newContent = profileContent.replace('$(' + paramKey + ')', args[paramName])
     profileContent = newContent
 
 profile = yaml.load(profileContent)
-print "**************"
+print "******************************************************"
 print yaml.dump(profile, default_flow_style=False)
 
 #if options.action == 'create':
