@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 
 from optparse import OptionParser
-import ConfigParser
 import yaml
 
 
@@ -19,24 +18,26 @@ for arg in argList:
     args[aa[0]] = aa[1]
 print "args:", args
 
-conf = ConfigParser.SafeConfigParser({})
 
-conf.read("cloudforge.conf")
-
-def usage():
-    print "%s: --profile PROFILE --name ENVNAME --action {create|delete} arg1=val1 [arg2=val2 ...]" % (sys.argv[0],)
+configfile = "cloudforge.yaml"
+stream = file(configfile, 'r')
+conf = yaml.load(stream)
+stream.close()
+#print "CONFIG"
+#print yaml.dump(conf, default_flow_style=False)
 
 profileSource = "profiles/%s.yaml" % options.profile
 stream = file(profileSource, 'r')
 profileContent = stream.read()
+stream.close()
 
 profile = yaml.load(profileContent)
 #print yaml.dump(profile, default_flow_style=False)
 
-runtimeArgs = profile['instance']
-print "runtimeArgs:", runtimeArgs
+instanceArgs = profile['instance']
+print "instanceArgs:", instanceArgs
 
-for paramName, paramKey in runtimeArgs.iteritems():
+for paramName, paramKey in instanceArgs.iteritems():
     #print "arg=%s, val=%s" % (arg, val)
     newContent = profileContent.replace('$(' + paramKey + ')', args[paramName])
     profileContent = newContent
@@ -44,5 +45,8 @@ for paramName, paramKey in runtimeArgs.iteritems():
 profile = yaml.load(profileContent)
 print "******************************************************"
 print yaml.dump(profile, default_flow_style=False)
+
+for m in finditer("\$\{.+\}",profileContent):
+    print m
 
 #if options.action == 'create':

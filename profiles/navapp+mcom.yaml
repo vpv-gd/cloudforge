@@ -6,51 +6,46 @@
 # no mcom
 
 # profile handler
-adapter: navapp
+adapter: ???
 
 # profile identifier
-id: navappreplica1
+id: navapp-and-mcom
 
 # instance parameters and their keys in the profile
 instance:
     navapp: CATALOG_WEB_BUILD
-    navappadmin: CATALOG_MT_BUILD
+    mcom: MCOM_BUILD
 
 # affected services
 services:
     NAVAPP:
         cloud:
-            - navappmaster: 1
-            - navappreplica: 1
+            - navapp: 1
     SDP:
         fixed:
             host: 64.151.85.184
             port: 8080
     MCOM:
-        fixed:
-            host: www.macys.com
-            port: 80
+        cloud:
+            - mcom: 1
 
 # cloud server types
 cloud:
-    navappmaster:
-        ram: 4GB
-        image: 3456
-    navappreplica:
+    navapp:
         ram: 2GB
         image: 3456
+    mcom:
+        ram: 4GB
+        image: 3998
 
-# software components and their parameters
+# used and deployed software components
 components:
-    catalogmt:
-        version: $(CATALOG_MT_BUILD)
-        imgserver: ${SCENE7_IMG_SERVER}
-        replication_enabled: true
-        bdb_port: 8080
+    macyswar:
+        version: $(MCOM_BUILD)
     catalogweb:
         version: $(CATALOG_WEB_BUILD)
-        imgserver: ${SCENE7_IMG_SERVER}
-        replication_enabled: true
+        imgserver: ${navapp.SCENE7_IMG_SERVER}
+        replication_enabled: false
         bdb_port: 8080
 
 # each of these blocks (services, cloud, components, deployment)
@@ -60,8 +55,8 @@ components:
 
 # deployment scheme
 deployment:
-    navappmaster:
-        - catalogmt
-    navappreplica:
+    mcom:
+        - macyswar
+    navapp:
         - catalogweb
 ...

@@ -1,0 +1,20 @@
+%YAML 1.2
+--- # configuration file (installation parameters) for cloudforge
+chef:
+    server: chef-s-a
+    key: /path/to/key
+
+cloud:
+    provider: gogrid
+    key: alpha
+    secret: beta
+
+db:
+    engine: sqlite3
+    file: /path/to/sqlite.db
+
+# installation-specific app-specific parameter
+navapp:
+    SCENE7_IMG_SERVER: http://lala.la/la-la/
+    
+...
