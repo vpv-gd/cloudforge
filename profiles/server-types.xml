@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- cloud server types -->
+<ServerTypes>
+    <type name="navappmaster" >
+        <ram>4GB</ram>
+        <image>3456</image>
+    </type>
+    <type name="navappreplica" >
+        <ram>2GB</ram>
+        <image>3456</image>
+    </type>
+</ServerTypes>
