@@ -1,0 +1,78 @@
+<?xml version="1.0"?>
+<Profile id="navappreplica1" adapter="navapp"
+    info="profile for Navapp with replication" >
+<!--
+# 1 CatalogMT as master node
+# 1 CatalogWeb as replica node
+# shared sdp
+# no mcom
+-->
+
+<Instance>
+<!-- instance parameters and their keys in the profile -->
+    <param name="navapp">CATALOG_WEB_BUILD</param>
+    <param name="navappadmin">CATALOG_MT_BUILD</param>
+    <param name="replicnum">NUMBER_OF_REPLICAS</param>
+</Instance>
+
+<Services>
+    <service name="NAVAPP" type="cloud" >
+        <server type="navappmaster" count="1" />
+        <server type="navappreplica" count="$(NUMBER_OF_REPLICAS)" />
+    </service>
+    <service name="SDP" type="fixed" >
+        <param name="host">64.151.85.184</param>
+        <param name="port">8080</param>
+    </service>
+    <service name="MCOM" type="fixed" >
+        <param name="host">www.macys.com</param>
+        <param name="port">80</param>
+    </service>
+</Services>
+
+<!-- cloud server types -->
+<ServerTypes>
+    <type name="navappmaster" >
+        <ram>4GB</ram>
+        <image>3456</image>
+    </type>
+    <type name="navappreplica" >
+        <ram>2GB</ram>
+        <image>3456</image>
+    </type>
+</ServerTypes>
+
+<!-- software components and their parameters -->
+<Components>
+    <component name="catalogmt" >
+        <param name="version">$(CATALOG_MT_BUILD)</param>
+        <param name="imgserver">${SCENE7_IMG_SERVER}</param>
+        <param name="replication_enabled">true</param>
+        <param name="bdb_port">8080</param>
+    </component>
+    <component name="catalogweb" >
+        <param name="version">$(CATALOG_WEB_BUILD)</param>
+        <param name="imgserver">${SCENE7_IMG_SERVER}</param>
+        <param name="replication_enabled">true</param>
+        <param name="bdb_port">8080</param>
+    </component>
+</Components>
+
+<!--
+# each of these blocks (services, cloud, components, deployment)
+# may be defined either locally (in-document) either externally
+# (in other file). In other words, we defenitely should support
+# "include" mechanism
+-->
+
+<!-- deployment scheme -->
+<Deployment>
+    <server type="navappmaster" >
+        <deploy component="catalogmt" />
+    </server>
+    <server type="navappreplica" >
+        <deploy component="catalogweb" />
+    </server>
+</Deployment>
+
+</Profile>
