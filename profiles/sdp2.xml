@@ -1,0 +1,59 @@
+<?xml version="1.0" standalone="no" ?>
+<!DOCTYPE profile [
+    <!ENTITY % Config SYSTEM "common.ent" >
+    %Config;
+    <!ENTITY ServerTypes SYSTEM "server-types.xml" >
+]>
+<Profile id="sdp2-standalone" adapter="sdp"
+    info="profile for SDP2 standalone" >
+<!--
+# 1 server with 1 storage node only
+-->
+
+<!-- instance parameters and their keys in the profile -->
+<Instance>
+    <param name="build">SDP_WEB_BUILD</param>
+    <param name="rtd_addr" optional="true" default="" >RTD_ADDR</param>
+    <param name="db2_endpoint" optional="true"
+        default="db2-1:5555:mcd1:MCYS:user:pass" >DB2_ENDPOINT</param>
+    <param name="custom_date" optional="true" default="" >CUSTOM_DATE_NAME</param>
+</Instance>
+
+<Services>
+    <service name="SDP" type="cloud" >
+        <server type="sdp2-single" count="1" />
+    </service>
+</Services>
+
+&ServerTypes;
+
+<!-- software components and their parameters -->
+<Components>
+    <component name="sdpweb" >
+        <param name="version">$(SDP_WEB_BUILD)</param>
+        <param name="isstorage">true</param>
+        <param name="wka">localhost</param>
+        <!-- !!! INCOMPLETE: no db2, rtd_addr and custom_date params -->
+    </component>
+    <component name="mass" >
+        <param name="version">1.1.3</param>
+        <param name="sdp">${SDP_IP}:8080</param>
+    </component>
+</Components>
+
+<!--
+# each of these blocks (services, cloud, components, deployment)
+# may be defined either locally (in-document) either externally
+# (in other file). In other words, we defenitely should support
+# "include" mechanism
+-->
+
+<!-- deployment scheme -->
+<Deployment>
+    <server type="sdp2-single" >
+        <deploy component="sdp-web" />
+        <deploy component="mass" />
+    </server>
+</Deployment>
+
+</Profile>
