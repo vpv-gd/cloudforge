@@ -13,6 +13,10 @@ db:
     engine: sqlite3
     file: /path/to/sqlite.db
 
+ssh:
+    node_key: /path/to/node.key
+    forge_key: /path/to/forge.key
+
 # installation-specific app-specific parameter
 navapp:
     SCENE7_IMG_SERVER: http://lala.la/la-la/
