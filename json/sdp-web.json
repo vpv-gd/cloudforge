@@ -1,0 +1,27 @@
+{
+    "breeze": {
+        "version": "%%SDP_BUILD%%",
+        "source": "%%SDP_URL%%",
+        "isstorage": "%%CACHE_ENABLED%%",
+        "wka": "%%WKA%%",
+        "rtd_addr": "%%RTD_ADDR%%",
+        "db2": {
+            "host": "%%DB2HOST%%",
+            "port": "%%DB2PORT%%",
+            "database": "%%DB2DATABASE%%",
+            "schema": "%%DB2SCHEMA%%",
+            "user": "%%DB2USER%%",
+            "password": "%%DB2PASSWORD%%"
+        }
+    },
+    "mass": {
+        "version": "%%MASS_BUILD%%"
+    },
+    "ssh_keys": {
+        "macys": "ssh-rsa AAAAB3NzaC1yc2EAAAABJQAAAIEA3cQpZJp7zDo6T77dixzobktd6cAYrsSEIZkfKMg1jo9rEhxb8NOTLlW5KGkdIBv/A99Sbc0Mt0BrL7zXzLjaDhUL2AgSv33/QcusdUmJkM3Tbd659/ebMlwhXaQbrrWIsW2H03LJ53rpmiMRQJDy8Fs0oOol5tbYt1A9NXIG3eM= rsa-key-20101005"
+    },
+    "run_list": [
+        "recipe[breeze::sdp2]",
+        "recipe[breeze::rto]"
+    ]
+}

@@ -8,6 +8,7 @@ parser = OptionParser()
 parser.add_option("-p", "--profile",  dest="profile",  help="use profile")
 parser.add_option("-n", "--name",  dest="name",  help="environment name")
 parser.add_option("-a", "--action",  dest="action",  help="requested action on env")
+parser.add_option("-r", "--raw",  dest="rawparam",  help="raw overwrite parameters file")
 
 (options, argList) = parser.parse_args()
 
