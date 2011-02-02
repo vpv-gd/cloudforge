@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- db2-1.c4d endpoint -->
+<param name="host">db2-1.c4d.griddynamics.net</param>
+<param name="port">50001</param>
+<param name="user">db2mcys</param>
+<param name="cred-path">/db2/common/db2mcys</param>

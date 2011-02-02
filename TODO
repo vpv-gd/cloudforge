@@ -1,0 +1,4 @@
+
+* Rethink deployment scheme. Looks excess (coding actions in xml).
+* Deployment scheme for variable numbers of nodes (navapp replicas)
+* how to implement get_db_info (req: on webapp level) ?

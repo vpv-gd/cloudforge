@@ -1,6 +1,22 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <!-- cloud server types -->
 <ServerTypes>
+    <type name="mcom" >
+        <ram>4GB</ram>
+        <image>5519</image>
+    </type>
+    <type name="fctd" >
+        <ram>4GB</ram>
+        <image>5519</image>
+    </type>
+    <type name="sdp" >
+        <ram>4GB</ram>
+        <image>5519</image>
+    </type>
+    <type name="dces" >
+        <ram>4GB</ram>
+        <image>5519</image>
+    </type>
     <type name="navappmaster" >
         <ram>4GB</ram>
         <image>3456</image>

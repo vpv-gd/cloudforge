@@ -1,0 +1,138 @@
+<?xml version="1.0" standalone="no" ?>
+<!DOCTYPE profile [
+    <!ENTITY % Config SYSTEM "common.ent" >
+    %Config;
+    <!ENTITY ServerTypes SYSTEM "server-types.xml" >
+    <!ENTITY DB2Host1 SYSTEM "db2-1.xml" >
+]>
+<Profile id="mcom-navapp-sdp"
+    info="profile for MCOM + Navapp + SDP (Jetty, without replication)" >
+<!--
+# 1 MCOM: macys.ear
+# 1 Navapp (CatalogWeb.war)
+# 1 SDP
+-->
+
+<!-- instance parameters and their keys in the profile -->
+<Instance>
+    <!-- these params are required -->
+    <param name="mcom">MCOM_BUILD</param>
+    <param name="mcom_assets">MCOM_ASSETS_BUILD</param>
+    <param name="navapp">NAVAPP_BUILD</param>
+    <param name="navapp_assets">NAVAPP_ASSETS_BUILD</param>
+    <param name="sdp">SDP_BUILD</param>
+    <!-- these params are optional, so they have default values -->
+    <!--
+    <param name="db" default="mcd1cgg@db2-1">DATABASE_LINK</param>
+    -->
+    <param name="custom_date" default="">CUSTOM_DATE_NAME</param>
+</Instance>
+
+<Services>
+    <service name="NAVAPP" type="cloud" >
+        <server type="fctd" />
+    </service>
+    <service name="SDP" type="cloud" >
+        <server type="sdp" />
+    </service>
+    <service name="MCOM" type="cloud" >
+        <server type="mcom" />
+    </service>
+    <service name="DB" type="fixed" >
+        &DB2Host1;
+        <param name="dbname">mcd1d</param>
+        <param name="schema">DB2MCYS</param>
+    </service>
+</Services>
+
+&ServerTypes;
+
+<!-- software components and their parameters -->
+<Components>
+    <component name="jetty" >
+        <param name="port">8080</param>
+    </component>
+    <component name="mcom" >
+        <param name="version">$(MCOM_BUILD)</param>
+        <param name="assets_version">$(MCOM_ASSETS_BUILD)</param>
+        <param name="appserver">jetty</param>
+        <param name="navapp_addr">${navapp_ip}:8080</param>
+        <param name="sdp_addr">${sdp_ip}:8080</param>
+        <param name="redirects">navapp</param>
+        <!-- <param name="redirects">navapp,rto</param> -->
+    </component>
+    <component name="navapp" >
+        <param name="version">$(NAVAPP_BUILD)</param>
+        <param name="assets_version">$(NAVAPP_ASSETS_BUILD)</param>
+        <param name="appserver">jetty</param>
+        <param name="mcom_addr">${mcom_ip}</param>
+        <param name="sdp_addr">${sdp_ip}:8080</param>
+    </component>
+    <component name="sdp" >
+        <param name="version">$(SDP_BUILD)</param>
+        <param name="custom_date_name">$(CUSTOM_DATE_NAME)</param>
+        <param name="db_conn">${db_conn}</param>
+        <param name="db_user">${db_user}</param>
+        <param name="db_pass">${db_pass}</param>
+    </component>
+</Components>
+
+<!--
+# each of these blocks (services, cloud, components, deployment)
+# may be defined either locally (in-document) either externally
+# (in other file). In other words, we defenitely should support
+# "include" mechanism
+-->
+
+<!-- deployment scheme -->
+<Deployment>
+    <!-- Do we really need this abstraction?
+         May be deployment scheme = script ?  -->
+    <parallel>
+        <create_server type="mcom" id="mcom_node" >
+            <output>
+                <keyword name="mcom_ip" />
+            </output>
+        </create_server>
+        <create_server type="navapp" id="navapp_node" >
+            <output>
+                <keyword name="navapp_ip" />
+            </output>
+        </create_server>
+        <create_server type="sdp" id="sdp_node" >
+            <output>
+                <keyword name="sdp_ip" />
+            </output>
+        </create_server>
+    </parallel>
+    <parallel>
+        <seq>
+            <bootstrap_server server="mcom_node" />
+            <deploy_component component="jetty" />
+            <deploy_component component="mcom" />
+        </seq>
+        <seq>
+            <bootstrap_server server="navapp_node" />
+            <deploy_component component="jetty" />
+            <deploy_component component="navapp" />
+        </seq>
+        <seq>
+            <bootstrap_server server="sdp_node" />
+            <run_job job="get_db_info" >
+                <output>
+                    <keyword name="db_conn" />
+                    <keyword name="db_user" />
+                    <keyword name="db_pass" />
+                </output>
+            </run_job>
+            <deploy_component server="sdp" component="sdp" />
+            <!--
+            <deploy_component server="sdp" component="mass" />
+            <deploy_component server="sdp" component="rto" />
+            -->
+            <run_job server="sdp" job="populate" />
+        </seq>
+    </parallel>
+</Deployment>
+
+</Profile>
